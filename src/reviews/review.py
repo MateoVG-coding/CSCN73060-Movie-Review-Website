@@ -24,9 +24,9 @@ def add_review(user_id, movie_id, review_text):
 
 
 
-def update_review(user_id, movie_id, review_text, review_id)
+def update_review(user_id, movie_id, review_text, review_id):
     # Validate data
-    if not user_id or not movie_id or not review_text or not review_id
+    if not user_id or not movie_id or not review_text or not review_id:
         print("Invalid data. UserID, MovieID, ReviewText and ReviewID are required.")
         return
     
