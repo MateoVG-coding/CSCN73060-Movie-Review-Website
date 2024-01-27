@@ -1,4 +1,6 @@
 from db.database import db
+from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
 
 class User(db.Model):
     __tablename__ = 'Users'
@@ -6,6 +8,12 @@ class User(db.Model):
     Username = db.Column(db.String(255), primary_key=True, nullable=False)
     PasswordHash = db.Column(db.String(255), nullable=False)
     RegistrationDate = db.Column(db.DateTime)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
 class Movie(db.Model):
     __tablename__ = 'Movies'
@@ -48,6 +56,6 @@ class UserAuthentication(db.Model):
 
     AuthID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     Username = db.Column(db.String(255), db.ForeignKey('Users.Username'))
-    AttemptTime = db.Column(db.DateTime)
+    Attempt_time = db.Column(db.DateTime, default=datetime.utcnow)
     IPAddress = db.Column(db.String(255))
     AttemptResult = db.Column(db.Boolean)
