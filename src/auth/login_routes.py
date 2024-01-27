@@ -1,5 +1,8 @@
 from flask import Blueprint, request, jsonify
 from werkzeug.security import check_password_hash
+from db.models import User, UserAuthentication
+from db import db
+import datetime
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -13,11 +16,18 @@ def login():
         username = data['username']
         password = data['password']
 
-        #There should be a function to store the login attempt wether is successfully or not.
+        user = User.query.filter_by(username=username).first()
 
-        if check_password_hash("mock-data", password):#Should check the hash password from the db
+        if user and user.check_password(password):
+            # Log successful login attempt
+            login_attempt = UserAuthentication(Username=username, AttemptTime=datetime.utcnow(), AttemptResult=True)
+            db.session.add(login_attempt)
+            db.session.commit()
             return jsonify({'message': 'Login successful'})
         else:
+            login_attempt = UserAuthentication(Username=username, AttemptTime=datetime.utcnow(), AttemptResult=False)
+            db.session.add(login_attempt)
+            db.session.commit()
             return jsonify({'error': 'Invalid credentials'}), 401
     else:
         return jsonify({'error': 'Invalid request format'}), 400
