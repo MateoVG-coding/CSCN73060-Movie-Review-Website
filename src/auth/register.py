@@ -1,6 +1,7 @@
 import sqlite3
 from datetime import datetime
 
+
 # Connect to the SQLite database
 conn = sqlite3.connect('MovieReview.sql')
 cursor = conn.cursor()
