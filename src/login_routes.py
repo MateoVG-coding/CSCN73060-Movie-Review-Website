@@ -1,12 +1,11 @@
 from flask import Blueprint, request, jsonify
-from werkzeug.security import check_password_hash
-from db.models import User, UserAuthentication
-from db import db
-import datetime
+from models import User, UserAuthentication, db
+from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
-auth_bp = Blueprint('auth', __name__)
+login_bp = Blueprint('login', __name__)
 
-@auth_bp.route('/login', methods=['POST'])
+@login_bp.route('/login', methods=['POST'])
 def login():
     """This function is for the login route"""
     if request.is_json:
@@ -18,14 +17,13 @@ def login():
 
         user = User.query.filter_by(username=username).first()
 
-        if user and user.check_password(password):
-            # Log successful login attempt
-            login_attempt = UserAuthentication(Username=username, AttemptTime=datetime.utcnow(), AttemptResult=True)
+        if user and check_password_hash(user.password_hash, password):
+            login_attempt = UserAuthentication(username=username, attempt_time=datetime.utcnow(), attempt_result=True)
             db.session.add(login_attempt)
             db.session.commit()
-            return jsonify({'message': 'Login successful'})
+            return jsonify({'message': 'Login successful'}), 200
         else:
-            login_attempt = UserAuthentication(Username=username, AttemptTime=datetime.utcnow(), AttemptResult=False)
+            login_attempt = UserAuthentication(username=username, attempt_time=datetime.utcnow(), attempt_result=False)
             db.session.add(login_attempt)
             db.session.commit()
             return jsonify({'error': 'Invalid credentials'}), 401
