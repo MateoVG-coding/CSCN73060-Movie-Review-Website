@@ -10,7 +10,7 @@ def register():
     """This function is for the registration route"""
 
     if request.method == 'GET':
-        #used to test if web client receiving get requests from server 
+        # Should return html or js file for register
         return jsonify({'username': 'username', 'password': 'password'})
     elif request.method == 'POST':
         data = request.json
