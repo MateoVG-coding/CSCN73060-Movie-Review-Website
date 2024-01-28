@@ -1,5 +1,33 @@
-h1{
+.movies{
     position:absolute;
-    top: 300px;
-    left: 200px;
+    left: 40px;
+    top: 500px;
 }
+
+.second-row{
+    margin-top: 200px;
+
+    .movie-card2{
+        position:absolute;
+        max-width: 30%;
+        bottom: -10px;
+        left: 500px;
+
+        img {
+            max-height: 200px;
+        }
+    }
+}
+.movie-card{
+    position:absolute;
+    max-width: 30%;
+    top: 150px;
+    left: 500px;
+
+
+        img {
+            max-height: 200px;
+        }
+}
+
+

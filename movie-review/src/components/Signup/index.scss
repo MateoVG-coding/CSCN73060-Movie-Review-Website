@@ -1,5 +1,4 @@
 
-
 .signup-h2{
     position:absolute;
     top: 280px;
@@ -11,14 +10,15 @@
 
 .form-space {  
     position:absolute;
-    left: 40%;
-    top: 350px;
+    left: 38%;
+    top: 320px;
 
     .signup-h2{
         position: absolute;
         top: -40px;
         right: 60px;
         margin-left: 0; 
+        color:white;
        
     }
 
@@ -31,6 +31,9 @@
     .submit-button{
        position: absolute;
        left: 20px;
+       color: black;
+       background-color: white;
+       border: 2px;
     }
 
       

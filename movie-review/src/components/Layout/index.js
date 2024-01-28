@@ -10,7 +10,9 @@ const Layout = () => {
     return(     
         <>      
             <Navbar/>
-            <Outlet/>    
+            <div className="col-6 offset-3 half-background">
+            </div>  
+            <Outlet/> 
         </>
     );
 }
