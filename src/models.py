@@ -52,7 +52,7 @@ class UserAuthentication(db.Model):
     auth_ID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(255), db.ForeignKey('Users.username'))
     attempt_time = db.Column(db.DateTime, default=datetime.utcnow)
-    ip_adddress = db.Column(db.String(255))
+    ip_address = db.Column(db.String(255))
     attempt_result = db.Column(db.Boolean)
 
 def connect_to_db(app):

@@ -1,36 +1,42 @@
 from flask import Blueprint, request, jsonify
-from werkzeug.security import generate_password_hash, check_password_hash
-from auth.register import create_user
+from models import User, UserAuthentication, db
+from werkzeug.security import generate_password_hash
+from datetime import datetime
 
-auth_bp = Blueprint('auth', __name__)
+register_bp = Blueprint('register', __name__)
 
-@auth_bp.route('/register', methods=['POST', 'GET'])
+@register_bp.route('/register', methods=['POST', 'GET'])
 def register():
     """This function is for the registration route"""
 
     if request.method == 'GET':
         #used to test if web client receiving get requests from server 
-        return jsonify({'username': 'username', 'password': 'password', 'email': 'email'})
+        return jsonify({'username': 'username', 'password': 'password'})
     elif request.method == 'POST':
-        if request.is_json:
-            data = request.json
-            if 'username' not in data or 'password' not in data or 'email' not in data:
-                return jsonify({'error': 'Missing username, password, or email in JSON'}), 400
+        data = request.json
+        if 'username' not in data or 'password' not in data:
+            return jsonify({'error': 'Missing username or password in JSON'}), 400
 
-            username = data['username']
-            password = data['password']
-            email = data['email']
+        username = data['username']
+        password = data['password']
 
-            # Validate data and perform registration logic
-            registration_successful = create_user(username, password, email)
+        # Check if the username already exists in the database
+        existing_user = User.query.filter(User.username == username).first()
 
-            if registration_successful:
-                return jsonify({'message': 'Registration successful'})
-            else:
-                return jsonify({'error': 'Registration failed. Username or email may already be taken.'}), 400
-        else:
-            return jsonify({'error': 'Invalid request format'}), 400
-        
+        if existing_user:
+            return jsonify({'error': 'Username already exists. Choose a different one.'}), 400
+
+        # Hash the password before storing it in the database
+        hashed_password = generate_password_hash(password, method='scrypt')
+
+        # Create a new user and add it to the database
+        new_user = User(username=username, password_hash=hashed_password, registration_date=datetime.utcnow())
+        db.session.add(new_user)
+        db.session.commit()
+
+        return jsonify({'message': 'Registration successful'}), 200
+    else:
+        return jsonify({'error': 'Invalid request format'}), 400
 
 
     

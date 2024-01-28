@@ -18,12 +18,12 @@ def login():
         user = User.query.filter_by(username=username).first()
 
         if user and check_password_hash(user.password_hash, password):
-            login_attempt = UserAuthentication(username=username, attempt_time=datetime.utcnow(), attempt_result=True)
+            login_attempt = UserAuthentication(username=username, attempt_time=datetime.utcnow(), attempt_result=True, ip_address = request.remote_addr)
             db.session.add(login_attempt)
             db.session.commit()
             return jsonify({'message': 'Login successful'}), 200
         else:
-            login_attempt = UserAuthentication(username=username, attempt_time=datetime.utcnow(), attempt_result=False)
+            login_attempt = UserAuthentication(username=username, attempt_time=datetime.utcnow(), attempt_result=False, ip_address = request.remote_addr)
             db.session.add(login_attempt)
             db.session.commit()
             return jsonify({'error': 'Invalid credentials'}), 401
