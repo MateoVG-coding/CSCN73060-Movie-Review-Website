@@ -59,9 +59,6 @@ class LoginRouteTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 401)
         self.assertEqual(response.json, {'error': 'Invalid credentials'})
 
-if __name__ == '__main__':
-    unittest.main()
-
 class RegisterRouteTestCase(unittest.TestCase):
     def setUp(self):
         # Create a test Flask app
@@ -127,3 +124,6 @@ class RegisterRouteTestCase(unittest.TestCase):
         self.assertEqual(response_missing_password.status_code, 400)
         self.assertIn('error', data_missing_password)
         self.assertEqual(data_missing_password['error'], 'Missing username or password in JSON')
+
+if __name__ == '__main__':
+    unittest.main()
