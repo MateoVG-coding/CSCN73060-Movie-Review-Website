@@ -5,10 +5,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 login_bp = Blueprint('login', __name__)
 
-@login_bp.route('/login', methods=['POST'])
+@login_bp.route('/login', methods=['POST', 'GET'])
 def login():
     """This function is for the login route"""
-    if request.is_json:
+    if request.method == 'GET':
+        # Should return html or js file for login
+        return jsonify({'username': 'username', 'password': 'password'})
+    elif request.method == 'POST':
         data = request.json
         if 'username' not in data or 'password' not in data:
             return jsonify({'error': 'Missing username or password in JSON'}), 400

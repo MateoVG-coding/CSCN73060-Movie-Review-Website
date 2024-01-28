@@ -1,5 +1,5 @@
 from datetime import datetime
-from database import db, Movie
+from models import db, Movie
 
 movies_data = [
     {"Title": "Inception", "ReleaseDate": "2010-07-16", "Genre": "Sci-Fi", "Director": "Christopher Nolan", "UrlImage": "https://posters.movieposterdb.com/10_06/2010/1375666/l_1375666_07030c72.jpg"},
