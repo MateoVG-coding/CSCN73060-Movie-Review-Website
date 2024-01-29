@@ -4,12 +4,15 @@ from models import Review, User, Movie, db, Rating
 
 review_bp = Blueprint('review', __name__)
 
-@review_bp.route('/add_review', methods=['POST', 'GET'])
-def add_review():
+@review_bp.route('/add_review/<int:movie_id>', methods=['GET'])
+def add_review(movie_id):
     """This function is for the route to add a new review"""
 
     if request.method == 'GET':
         # Should return html or js file to add review
+
+        movie = Movie.query.get(movie_id)
+
         return render_template(
             "add_review.html",
             movie=movie,
@@ -44,8 +47,8 @@ def add_review():
     else:
         return jsonify({'error': 'Invalid request format'}), 400
 
-@review_bp.route('/update_review', methods=['PUT', 'GET'])
-def update_review():
+@review_bp.route('/update_review/<int:movie_id>', methods=['PUT', 'GET'])
+def update_review(movie_id):
     """This function is for the route to update an existing review"""
 
     if request.method == 'GET':
