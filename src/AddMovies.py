@@ -14,16 +14,18 @@ def initialize_movies():
     ]
     #Add more movies as needed
 
-    # Add instances to the session and commit changes
     for movie_data in movies_data:
-        movie = Movie(
-            title=movie_data["Title"],
-            release_date=datetime.strptime(movie_data["ReleaseDate"], "%Y-%m-%d").date(),
-            genre=movie_data["Genre"],
-            director=movie_data["Director"],
-            url_image=movie_data["UrlImage"]
-        )
-        db.session.add(movie)
+        existing_movie = Movie.query.filter_by(title=movie_data["Title"], release_date=datetime.strptime(movie_data["ReleaseDate"], "%Y-%m-%d").date()).first()
+
+        if not existing_movie:
+            movie = Movie(
+                title=movie_data["Title"],
+                release_date=datetime.strptime(movie_data["ReleaseDate"], "%Y-%m-%d").date(),
+                genre=movie_data["Genre"],
+                director=movie_data["Director"],
+                url_image=movie_data["UrlImage"]
+            )
+            db.session.add(movie)
 
     db.session.commit()
     print("Movies added successfully!")
