@@ -22,7 +22,7 @@ const Signup = () => {
         }
       };
   
-      fetchRegisterData();
+      //fetchRegisterData();
       // empty array present to prevent loop of get requests
       // TODO:
         //fix bug of two get requests issued when user clicks;
@@ -30,21 +30,23 @@ const Signup = () => {
 
     return (
       <>
+    
+       
         <div className="row"> 
             <div className="col-md-3 col-sm-1 form-space"> 
                 <h2 className="signup-h2"> Sign up today!</h2>
                 <form>
                     <div className="form-group">
-                            <input type="text" className="form-control" id="username" placeholder={data.username}/>
+                            <input type="text" className="form-control" id="username" placeholder={data.username} required/>
                     </div>
                     <div className="form-group">
-                        <input type="password" className="form-control" id="passwordrepeat" placeholder={data.password}/>
+                        <input type="password" className="form-control" id="passwordrepeat" placeholder={data.password} required/>
                     </div>
                     <div className="form-group">
-                        <input type="password" className="form-control" id="password" placeholder="Repeat Password"/>
+                        <input type="password" className="form-control" id="password" placeholder="Repeat Password" required/>
                     </div>
                     <div className="form-group">
-                        <input type="email" className="form-control" id="email" placeholder="name@example.com"></input>
+                        <input type="email" className="form-control" id="email" placeholder="name@example.com" required></input>
                     </div>
                 </form> 
                 <buton className="btn btn-md btn-success submit-button" ><span className=" register-sp">Register</span></buton>

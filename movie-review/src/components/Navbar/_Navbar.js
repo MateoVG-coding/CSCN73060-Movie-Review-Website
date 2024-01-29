@@ -20,7 +20,7 @@ const Navbar = () => {
                 <a class="nav-link" href="/signup">Create Account</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Sign-In</a>
+                <a class="nav-link" href="/signin">Sign-In</a>
             </li>
             <li class="nav-item">
             <a class="nav-link" href="/Review">Reviewed Movies</a>

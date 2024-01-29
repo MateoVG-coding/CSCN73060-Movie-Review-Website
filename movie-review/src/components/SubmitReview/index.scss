@@ -1,0 +1,29 @@
+
+
+.submit-title{
+    position:absolute;
+    top: 200px;
+    left:800px;
+    color:white;
+}
+.submit-review{
+    position:absolute;
+    max-height: 500px;
+    top: 300px;
+    left: 700px;
+
+        img {
+            height: 350px;
+        }
+
+        .review-submit {
+            position:absolute;
+            height: 30px;
+            top: 535px;
+            width: 60px;
+            font-size: 10px;
+        }
+        textarea{
+            font-size: 20px;
+        }
+}
