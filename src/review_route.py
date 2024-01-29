@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, redirect, render_template
+from flask import Blueprint, request, jsonify, redirect, render_template, session
 from datetime import datetime
 from models import Review, User, Movie, db, Rating
 
@@ -87,8 +87,8 @@ def update_review(movie_id):
         return jsonify({'error': 'Invalid request format'}), 400
     
 
-@review_bp.route('/delete_review', methods=['DELETE', 'GET'])
-def delete_review():
+@review_bp.route('/delete_review/<int:movie_id>', methods=['DELETE', 'GET'])
+def delete_review(movie_id):
     """This function is for the route to update an existing review"""
     
     if request.method == 'DELETE':
@@ -96,12 +96,11 @@ def delete_review():
         if 'username' not in data or 'review_ID' not in data or 'rating_id' not in data:
             return jsonify({'error': 'Missing username, movie_ID, review_ID, or review_text in JSON'}), 400
         
-        user_id = data['username']
-        review_id = data['review_ID']
-        rating_id = data['rating_id']
+        movie = Movie.query.get(movie_id)
+        user_id = session.get("user_id")
 
-        review = Review.query.filter_by(review_ID=review_id, username=user_id).first()
-        rating = Rating.query.filter_by(rating_ID=rating_id).first()
+        review = Review.query.filter_by(movie_ID=movie_id, username=user_id).first()
+        rating = Rating.query.filter_by(movie_ID=movie_id, username=user_id).first()
 
         if not review & rating:
             return jsonify({'error': 'Review not found or unauthorized.'}), 400
