@@ -52,8 +52,18 @@ def update_review(movie_id):
     """This function is for the route to update an existing review"""
 
     if request.method == 'GET':
-        # Should return html or js file to update review
-        return jsonify({'username': 'username', 'password': 'password'})
+        movie = Movie.query.get(movie_id)
+        user_id = session.get("user_id")
+        rating = Rating.query.filter_by(movie_ID=movie_id, username=user_id).first()
+        review = Review.query.filter_by(movie_ID=movie_id, username=user_id).first()
+
+        return render_template(
+            "add_review.html",
+            movie=movie,
+            user_ID=user_id,
+            rating=rating,
+            review=review
+        )
     elif request.method == 'PUT':
         data = request.form
         if 'username' not in data or 'movie_ID' not in data or 'review_ID' not in data or 'review_text' not in data or 'rating' not in data or 'rating_id' not in data:
