@@ -4,7 +4,7 @@ from models import Review, User, Movie, db, Rating
 
 review_bp = Blueprint('review', __name__)
 
-@review_bp.route('/add_review/<int:movie_id>', methods=['GET'])
+@review_bp.route('/add_review/<int:movie_id>', methods=['GET', 'POST'])
 def add_review(movie_id):
     """This function is for the route to add a new review"""
 
@@ -18,7 +18,7 @@ def add_review(movie_id):
             movie=movie,
         )
     elif request.method == 'POST':
-        data = request.json
+        data = request.form
         if 'username' not in data or 'movie_ID' not in data or 'review_text' not in data or 'rating' not in data:
             return jsonify({'error': 'Missing username, movie_ID, or review_text in JSON'}), 400
 
@@ -55,7 +55,7 @@ def update_review(movie_id):
         # Should return html or js file to update review
         return jsonify({'username': 'username', 'password': 'password'})
     elif request.method == 'PUT':
-        data = request.json
+        data = request.form
         if 'username' not in data or 'movie_ID' not in data or 'review_ID' not in data or 'review_text' not in data or 'rating' not in data or 'rating_id' not in data:
             return jsonify({'error': 'Missing username, movie_ID, review_ID, or review_text in JSON'}), 400
 
@@ -92,7 +92,7 @@ def delete_review():
     """This function is for the route to update an existing review"""
     
     if request.method == 'DELETE':
-        data = request.json
+        data = request.form
         if 'username' not in data or 'review_ID' not in data or 'rating_id' not in data:
             return jsonify({'error': 'Missing username, movie_ID, review_ID, or review_text in JSON'}), 400
         
