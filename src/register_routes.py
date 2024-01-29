@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, render_template
+from flask import Blueprint, request, jsonify, render_template, redirect
 from models import User, UserAuthentication, db
 from werkzeug.security import generate_password_hash
 from datetime import datetime
@@ -34,7 +34,7 @@ def register():
         db.session.add(new_user)
         db.session.commit()
 
-        return jsonify({'message': 'Registration successful'}), 200
+        return redirect('/movies', code=200)
     else:
         return jsonify({'error': 'Invalid request format'}), 400
 

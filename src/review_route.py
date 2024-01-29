@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, redirect
 from datetime import datetime
 from models import Review, User, Movie, db, Rating
 
@@ -37,7 +37,7 @@ def add_review():
         db.session.add(new_rating)
         db.session.commit()
 
-        return jsonify({'message': 'Review added successfully'})
+        return redirect('/movies', code=200)
     else:
         return jsonify({'error': 'Invalid request format'}), 400
 
@@ -74,7 +74,7 @@ def update_review():
 
             db.session.commit()
             
-            return jsonify({'message': 'Review updated successfully'})
+            return redirect('/movies', code=200)
         else:
             return jsonify({'error': 'Failed to update review. Review not found or unauthorized.'}), 400
     else:
@@ -107,7 +107,7 @@ def delete_review():
         db.session.delete(rating)
         db.commit()
 
-        return jsonify({'message': 'Review deleted successfully'})
+        return redirect('/movies', code=200)
     else:
         return jsonify({'error': 'Invalid request format'})
         
