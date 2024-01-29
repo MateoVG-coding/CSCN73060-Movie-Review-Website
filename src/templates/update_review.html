@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Review</title>
+    <!-- Add any additional styles or links to external stylesheets here -->
+</head>
+<body>
+    <h1>Update Review</h1>
+
+    <!-- Display the update review form -->
+    <form action="/update_review/{{ movie.movie_ID }}" method="PUT">
+        <!-- Include the session-stored username in the form -->
+        <input type="hidden" name="username" value="{{ user_ID }}">
+        
+        <label for="movie_ID">Movie ID:</label>
+        <input type="text" name="movie_ID" value="{{ movie.movie_ID }}" readonly>
+        <br>
+        <label for="review_ID">Review ID:</label>
+        <input type="hidden" name="review_ID" value="{{ review.review_ID }}" readonly>
+        <br>
+        <label for="review_text">Review Text:</label>
+        <textarea name="review_text" required>{{ review.review_text }}</textarea>
+        <br>
+        <label for="rating_id">Rating ID:</label>
+        <input type="hidden" name="rating_id" value="{{ rating.rating_ID }}" readonly>
+        <br>
+        <label for="rating">Rating:</label>
+        <input type="number" name="rating" min="1" max="10" required value="{{ rating.rating_value }}">
+        <br>
+        <button type="submit">Update Review</button>
+    </form>
+</body>
+</html>
