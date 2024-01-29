@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, redirect
+from flask import Blueprint, request, jsonify, redirect, render_template
 from datetime import datetime
 from models import Review, User, Movie, db, Rating
 
@@ -10,7 +10,10 @@ def add_review():
 
     if request.method == 'GET':
         # Should return html or js file to add review
-        return jsonify({'username': 'username', 'password': 'password'})
+        return render_template(
+            "add_review.html",
+            movie=movie,
+        )
     elif request.method == 'POST':
         data = request.json
         if 'username' not in data or 'movie_ID' not in data or 'review_text' not in data or 'rating' not in data:
@@ -85,10 +88,7 @@ def update_review():
 def delete_review():
     """This function is for the route to update an existing review"""
     
-    if request.method == 'GET':
-        # Should return html or js file to delete review
-        return jsonify({'username': 'username', 'password': 'password'})
-    elif request.method == 'DELETE':
+    if request.method == 'DELETE':
         data = request.json
         if 'username' not in data or 'review_ID' not in data or 'rating_id' not in data:
             return jsonify({'error': 'Missing username, movie_ID, review_ID, or review_text in JSON'}), 400
