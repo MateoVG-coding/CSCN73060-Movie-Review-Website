@@ -1,10 +1,10 @@
-from flask import (Flask, jsonify, render_template, redirect, request, flash, session)
+from flask import Blueprint, request, jsonify, render_template
 
-app = Flask(__name__)
+home_bp = Blueprint('home', __name__)
 
-@app.route('/')
+@home_bp.route('/')
 def index():
     """Homepage."""
     
     # Should return html or js file for the homepage
-    return 
+    return render_template("homepage.html")

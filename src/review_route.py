@@ -1,18 +1,24 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, redirect, render_template, session
 from datetime import datetime
 from models import Review, User, Movie, db, Rating
 
 review_bp = Blueprint('review', __name__)
 
-@review_bp.route('/add_review', methods=['POST', 'GET'])
-def add_review():
+@review_bp.route('/add_review/<int:movie_id>', methods=['GET', 'POST'])
+def add_review(movie_id):
     """This function is for the route to add a new review"""
 
     if request.method == 'GET':
         # Should return html or js file to add review
-        return jsonify({'username': 'username', 'password': 'password'})
+
+        movie = Movie.query.get(movie_id)
+
+        return render_template(
+            "add_review.html",
+            movie=movie,
+        )
     elif request.method == 'POST':
-        data = request.json
+        data = request.form
         if 'username' not in data or 'movie_ID' not in data or 'review_text' not in data or 'rating' not in data:
             return jsonify({'error': 'Missing username, movie_ID, or review_text in JSON'}), 400
 
@@ -37,19 +43,29 @@ def add_review():
         db.session.add(new_rating)
         db.session.commit()
 
-        return jsonify({'message': 'Review added successfully'})
+        return redirect('/movies')
     else:
         return jsonify({'error': 'Invalid request format'}), 400
 
-@review_bp.route('/update_review', methods=['PUT', 'GET'])
-def update_review():
+@review_bp.route('/update_review/<int:movie_id>', methods=['PUT', 'GET'])
+def update_review(movie_id):
     """This function is for the route to update an existing review"""
 
     if request.method == 'GET':
-        # Should return html or js file to update review
-        return jsonify({'username': 'username', 'password': 'password'})
+        movie = Movie.query.get(movie_id)
+        user_id = session.get("user_id")
+        rating = Rating.query.filter_by(movie_ID=movie_id, username=user_id).first()
+        review = Review.query.filter_by(movie_ID=movie_id, username=user_id).first()
+
+        return render_template(
+            "add_review.html",
+            movie=movie,
+            user_ID=user_id,
+            rating=rating,
+            review=review
+        )
     elif request.method == 'PUT':
-        data = request.json
+        data = request.form
         if 'username' not in data or 'movie_ID' not in data or 'review_ID' not in data or 'review_text' not in data or 'rating' not in data or 'rating_id' not in data:
             return jsonify({'error': 'Missing username, movie_ID, review_ID, or review_text in JSON'}), 400
 
@@ -74,31 +90,27 @@ def update_review():
 
             db.session.commit()
             
-            return jsonify({'message': 'Review updated successfully'})
+            return redirect('/movies')
         else:
             return jsonify({'error': 'Failed to update review. Review not found or unauthorized.'}), 400
     else:
         return jsonify({'error': 'Invalid request format'}), 400
     
 
-@review_bp.route('/delete_review', methods=['DELETE', 'GET'])
-def delete_review():
+@review_bp.route('/delete_review/<int:movie_id>', methods=['DELETE', 'GET'])
+def delete_review(movie_id):
     """This function is for the route to update an existing review"""
     
-    if request.method == 'GET':
-        # Should return html or js file to delete review
-        return jsonify({'username': 'username', 'password': 'password'})
-    elif request.method == 'DELETE':
-        data = request.json
+    if request.method == 'DELETE':
+        data = request.form
         if 'username' not in data or 'review_ID' not in data or 'rating_id' not in data:
             return jsonify({'error': 'Missing username, movie_ID, review_ID, or review_text in JSON'}), 400
         
-        user_id = data['username']
-        review_id = data['review_ID']
-        rating_id = data['rating_id']
+        movie = Movie.query.get(movie_id)
+        user_id = session.get("user_id")
 
-        review = Review.query.filter_by(review_ID=review_id, username=user_id).first()
-        rating = Rating.query.filter_by(rating_ID=rating_id).first()
+        review = Review.query.filter_by(movie_ID=movie_id, username=user_id).first()
+        rating = Rating.query.filter_by(movie_ID=movie_id, username=user_id).first()
 
         if not review & rating:
             return jsonify({'error': 'Review not found or unauthorized.'}), 400
@@ -107,7 +119,7 @@ def delete_review():
         db.session.delete(rating)
         db.commit()
 
-        return jsonify({'message': 'Review deleted successfully'})
+        return redirect('/movies')
     else:
         return jsonify({'error': 'Invalid request format'})
         

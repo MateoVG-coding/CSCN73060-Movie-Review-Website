@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 
@@ -56,7 +57,10 @@ class UserAuthentication(db.Model):
     attempt_result = db.Column(db.Boolean)
 
 def connect_to_db(app):
-    sqlite_uri = 'sqlite:///' + 'C:/Users/Mateo V.G/source/repos/CSCN73060-ProjectVI-MovieReview-Website/src/database_movies.db'
+
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    database_filename = 'database_movies.db'
+    sqlite_uri = 'sqlite:///' + os.path.join(current_directory, database_filename)
     app.config['SQLALCHEMY_DATABASE_URI'] = sqlite_uri
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
