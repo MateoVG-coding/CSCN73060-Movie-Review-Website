@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, session
+from flask import Blueprint, request, jsonify, session, render_template
 from models import User, UserAuthentication, db
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -10,7 +10,7 @@ def login():
     """This function is for the login route"""
     if request.method == 'GET':
         # Should return html or js file for login
-        return jsonify({'username': 'username', 'password': 'password'})
+        return render_template("login.html")
     elif request.method == 'POST':
         data = request.json
         if 'username' not in data or 'password' not in data:

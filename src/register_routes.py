@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, render_template
 from models import User, UserAuthentication, db
 from werkzeug.security import generate_password_hash
 from datetime import datetime
@@ -11,7 +11,7 @@ def register():
 
     if request.method == 'GET':
         # Should return html or js file for register
-        return jsonify({'username': 'username', 'password': 'password'})
+        return render_template("register.html")
     elif request.method == 'POST':
         data = request.json
         if 'username' not in data or 'password' not in data:
