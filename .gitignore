@@ -1,3 +1,5 @@
 venv/
 .vscode/
 .vs/
+src/__pycache__/*.pyc
+test/__pycache__/*.pyc
