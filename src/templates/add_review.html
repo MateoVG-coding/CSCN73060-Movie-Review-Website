@@ -22,7 +22,7 @@
     {% endif %}
 
     <!-- Display the add review form -->
-    <form action="/add_review" method="POST">
+    <form action="/add_review/{{ movie.movie_ID }}" method="POST", enctype="application/json">
         <!-- Include the session-stored username in the form -->
         <input type="hidden" name="username" value="{{ session['username'] }}">
         <input type="hidden" name="movie_ID" value="{{ movie.movie_ID }}">
