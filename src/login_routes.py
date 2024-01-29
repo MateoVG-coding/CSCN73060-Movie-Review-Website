@@ -5,6 +5,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 login_bp = Blueprint('login', __name__)
 
+login_bp.secret_key = '123'
+
 @login_bp.route('/login', methods=['POST', 'GET'])
 def login():
     """This function is for the login route"""
@@ -12,7 +14,7 @@ def login():
         # Should return html or js file for login
         return render_template("login.html")
     elif request.method == 'POST':
-        data = request.json
+        data = request.form
         if 'username' not in data or 'password' not in data:
             return jsonify({'error': 'Missing username or password in JSON'}), 400
         username = data['username']
@@ -24,8 +26,8 @@ def login():
             login_attempt = UserAuthentication(username=username, attempt_time=datetime.utcnow(), attempt_result=True, ip_address = request.remote_addr)
             db.session.add(login_attempt)
             db.session.commit()
-            session['user_id'] = user.user_id
-            return redirect('/movies', code=200)
+            session['username'] = user.username
+            return redirect('/movies')
         else:
             login_attempt = UserAuthentication(username=username, attempt_time=datetime.utcnow(), attempt_result=False, ip_address = request.remote_addr)
             db.session.add(login_attempt)

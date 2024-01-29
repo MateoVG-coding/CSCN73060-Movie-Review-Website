@@ -1,9 +1,11 @@
-from flask import Blueprint, request, jsonify, render_template, redirect
+from flask import Blueprint, request, jsonify, render_template, redirect, session
 from models import User, UserAuthentication, db
 from werkzeug.security import generate_password_hash
 from datetime import datetime
 
 register_bp = Blueprint('register', __name__)
+
+register_bp.secret_key = '123'
 
 @register_bp.route('/register', methods=['POST', 'GET'])
 def register():
@@ -13,7 +15,7 @@ def register():
         # Should return html or js file for register
         return render_template("register.html")
     elif request.method == 'POST':
-        data = request.json
+        data = request.form
         if 'username' not in data or 'password' not in data:
             return jsonify({'error': 'Missing username or password in JSON'}), 400
 
@@ -33,8 +35,9 @@ def register():
         new_user = User(username=username, password_hash=hashed_password, registration_date=datetime.utcnow())
         db.session.add(new_user)
         db.session.commit()
+        session['username'] = existing_user.username
 
-        return redirect('/movies', code=200)
+        return redirect('/movies')
     else:
         return jsonify({'error': 'Invalid request format'}), 400
 
