@@ -35,7 +35,7 @@ def register():
         new_user = User(username=username, password_hash=hashed_password, registration_date=datetime.utcnow())
         db.session.add(new_user)
         db.session.commit()
-        session['username'] = existing_user.username
+        session['username'] = new_user.username
 
         return redirect('/movies')
     else:

@@ -36,3 +36,30 @@ def login():
     else:
         return jsonify({'error': 'Invalid request format'}), 400
     
+@login_bp.route('/change-password', methods=['GET', 'PATCH'])
+def change_password():
+    if request.method == 'GET':
+        # Return a response for the GET request (e.g., render a template)
+        return render_template('change_password.html')
+
+    if 'username' not in session:
+        return jsonify({'error': 'User not logged in'}), 401
+
+    user = User.query.filter_by(username=session['username']).first()
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+
+    current_password = request.form.get('current_password')
+    new_password = request.form.get('new_password')
+
+    if not current_password or not new_password:
+        return jsonify({'error': 'Missing current or new password'}), 400
+
+    if not check_password_hash(user.password_hash, current_password):
+        return jsonify({'error': 'Current password is incorrect'}), 401
+
+    # Hash the new password before updating
+    user.password_hash = generate_password_hash(new_password)
+    db.session.commit()
+
+    return jsonify({'message': 'Password changed successfully'}), 200

@@ -58,7 +58,7 @@ class UserAuthentication(db.Model):
 
 def connect_to_db(app):
 
-    current_directory = os.path.dirname(os.path.abspath(file))
+    current_directory = os.path.dirname(os.path.abspath(__file__))
     database_filename = 'database_movies.db'
     sqlite_uri = 'sqlite:///' + os.path.join(current_directory, database_filename)
     app.config['SQLALCHEMY_DATABASE_URI'] = sqlite_uri
