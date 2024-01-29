@@ -22,9 +22,9 @@
     {% if user_rating %}
         <p><strong>Your Rating:</strong> {{ user_rating.rating_value }}/10</p>
 	<p><strong>Your Review:</strong> {{ review.review_text }}</p>
-	<a href="/update_review/{{ movie.movie_id }}">Update Review</a>
+	<a href="/update_review/{{ movie.movie_ID }}">Update Review</a>
     {% else %}
-        <a href="/add_review/{{ movie.movie_id }}">Add Review</a>
+        <a href="/add_review/{{ movie.movie_ID }}">Add Review</a>
     {% endif %}
 
     <a href="/">Home</a>
