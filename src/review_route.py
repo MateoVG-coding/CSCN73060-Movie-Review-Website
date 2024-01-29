@@ -37,7 +37,7 @@ def add_review():
         db.session.add(new_rating)
         db.session.commit()
 
-        return redirect('/movies', code=200)
+        return redirect('/movies')
     else:
         return jsonify({'error': 'Invalid request format'}), 400
 
@@ -74,7 +74,7 @@ def update_review():
 
             db.session.commit()
             
-            return redirect('/movies', code=200)
+            return redirect('/movies')
         else:
             return jsonify({'error': 'Failed to update review. Review not found or unauthorized.'}), 400
     else:
@@ -107,7 +107,7 @@ def delete_review():
         db.session.delete(rating)
         db.commit()
 
-        return redirect('/movies', code=200)
+        return redirect('/movies')
     else:
         return jsonify({'error': 'Invalid request format'})
         
