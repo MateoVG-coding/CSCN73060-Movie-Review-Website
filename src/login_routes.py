@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, session
 from models import User, UserAuthentication, db
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -24,6 +24,7 @@ def login():
             login_attempt = UserAuthentication(username=username, attempt_time=datetime.utcnow(), attempt_result=True, ip_address = request.remote_addr)
             db.session.add(login_attempt)
             db.session.commit()
+            session['user_id'] = user.user_id
             return jsonify({'message': 'Login successful'}), 200
         else:
             login_attempt = UserAuthentication(username=username, attempt_time=datetime.utcnow(), attempt_result=False, ip_address = request.remote_addr)

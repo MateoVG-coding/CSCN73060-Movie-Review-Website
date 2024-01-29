@@ -7,4 +7,4 @@ def index():
     """Homepage."""
     
     # Should return html or js file for the homepage
-    return 
+    return render_template("homepage.html")

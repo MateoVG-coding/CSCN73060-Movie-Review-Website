@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ movie.title }}</title>
+    <!-- Add any additional styles or links to external stylesheets here -->
+</head>
+<body>
+    <h1>{{ movie.title }}</h1>
+
+    <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
+    <p><strong>Genre:</strong> {{ movie.genre }}</p>
+    <p><strong>Director:</strong> {{ movie.director }}</p>
+    
+    {% if movie.url_image %}
+        <img src="{{ movie.url_image }}" alt="{{ movie.title }} Poster" style="max-width: 400px; max-height: 600px;">
+    {% else %}
+        <p>No image available</p>
+    {% endif %}
+
+    {% if user_rating %}
+        <p><strong>Your Rating:</strong> {{ user_rating.rating_value }}/10</p>
+	<p><strong>Your Review:</strong> {{ review.review_text }}</p>
+	<a href="/update_review">Update Review</a>
+    {% else %}
+        <a href="/add_review">Add Review</a>
+    {% endif %}
+
+    <a href="/">Home</a>
+
+</body>
+</html>
