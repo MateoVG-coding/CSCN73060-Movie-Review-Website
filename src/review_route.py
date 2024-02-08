@@ -113,12 +113,12 @@ def delete_review(movie_id):
         review = Review.query.filter_by(movie_ID=movie_id, username=user_id).first()
         rating = Rating.query.filter_by(movie_ID=movie_id, username=user_id).first()
 
-        if not review & rating:
+        if not review and not rating:
             return jsonify({'error': 'Review not found or unauthorized.'}), 400
         
         db.session.delete(review)
         db.session.delete(rating)
-        db.commit()
+        db.session.commit()
 
         return redirect('/movies')
     else:
