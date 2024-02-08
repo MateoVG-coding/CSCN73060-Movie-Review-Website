@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, redirect, render_template, session
+from flask import Blueprint, request, jsonify, redirect, render_template, session, url_for
 from datetime import datetime
 from models import Review, User, Movie, db, Rating
 
@@ -61,14 +61,14 @@ def update_review(movie_id):
         review = Review.query.filter_by(movie_ID=movie_id, username=user_id).first()
 
         return render_template(
-            "add_review.html",
+            "update_review.html",
             movie=movie,
             user_ID=user_id,
             rating=rating,
             review=review
         )
     elif request.method == 'PUT':
-        data = request.form
+        data = request.get_json(force=True)
         if 'review_ID' not in data or 'review_text' not in data or 'rating' not in data or 'rating_id' not in data:
             return jsonify({'error': 'Missing username, movie_ID, review_ID, or review_text in JSON'}), 400
         
@@ -81,17 +81,17 @@ def update_review(movie_id):
         review_updated = Review.query.filter_by(review_ID=review_id).first()
         rating_updated = Rating.query.filter_by(rating_ID=rating_id).first()
 
-        if review_updated & rating_updated:
+        if review_updated and rating_updated:
 
-            review_updated.ReviewText = review_text
-            review_updated.ReviewDate = datetime.utcnow()
+            review_updated.review_text = review_text
+            review_updated.review_date = datetime.utcnow()
 
             rating_updated.rating_value = rating
             rating_updated.rating_date = datetime.utcnow()
 
             db.session.commit()
             
-            return redirect('/movies')
+            return redirect('/movies', code=200)  # ISSUE: Not redirecting to "/movies"
         else:
             return jsonify({'error': 'Failed to update review. Review not found or unauthorized.'}), 400
     else:
