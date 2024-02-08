@@ -91,7 +91,7 @@ def update_review(movie_id):
 
             db.session.commit()
             
-            return redirect('/movies', code=200)  # ISSUE: Not redirecting to "/movies"
+            return jsonify({'success': 'Review updated successfully', 'redirect_url': url_for('movies.get_list')}), 200 
         else:
             return jsonify({'error': 'Failed to update review. Review not found or unauthorized.'}), 400
     else:
@@ -116,7 +116,7 @@ def delete_review(movie_id):
         db.session.delete(rating)
         db.session.commit()
 
-        return redirect('/movies')
+        return jsonify({'success': 'Review deleted successfully', 'redirect_url': url_for('movies.get_list')}), 200 
     else:
         return jsonify({'error': 'Invalid request format'})
         

@@ -22,21 +22,23 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const updateReviewForm = document.getElementById('updateReviewForm');
-
+    
             updateReviewForm.addEventListener('submit', function(event) {
-                event.preventDefault();
-
+                event.preventDefault();  // Make sure this line is present
+    
                 const formData = new FormData(updateReviewForm);
-                const movieID = formData.get('movie_ID');  
+                const movieID = formData.get('movie_ID');
                 const updateReviewUrl = `/update_review/${movieID}`;
-
+    
                 const jsonData = {
                     review_ID: formData.get('review_ID'),
                     review_text: formData.get('review_text'),
                     rating_id: formData.get('rating_id'),
-                    rating: formData.get('rating')
+                    rating: formData.get('rating'),
+                    username: formData.get('username'),
+                    movie_ID: formData.get('movie_ID')
                 };
-
+    
                 fetch(updateReviewUrl, {
                     method: 'PUT',
                     headers: {
@@ -62,6 +64,7 @@
             });
         });
     </script>
+    
 
     <form id="updateReviewForm">
         <!-- Include the session-stored username in the form -->
