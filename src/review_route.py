@@ -50,9 +50,16 @@ def add_review(movie_id):
     else:
         return jsonify({'error': 'Invalid request format'}), 400
 
-@review_bp.route('/update_review/<int:movie_id>', methods=['PUT', 'GET'])
+@review_bp.route('/update_review/<int:movie_id>', methods=['PUT', 'GET', 'OPTIONS'])
 def update_review(movie_id):
     """This function is for the route to update an existing review"""
+    if request.method == 'OPTIONS':
+        response = jsonify({
+            "allow": "GET, PUT",
+            "description": "This endpoint allows to update movie review and get the HTML for it."
+        })
+        response.headers['Access-Control-Allow-Methods'] = 'GET, PUT'
+        return response
 
     if request.method == 'GET':
         movie = Movie.query.get(movie_id)

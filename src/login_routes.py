@@ -36,8 +36,16 @@ def login():
     else:
         return jsonify({'error': 'Invalid request format'}), 400
     
-@login_bp.route('/change-password', methods=['GET', 'PATCH'])
+@login_bp.route('/change-password', methods=['GET', 'PATCH', 'OPTIONS'])
 def change_password():
+    if request.method == 'OPTIONS':
+        response = jsonify({
+            "allow": "GET, PATCH",
+            "description": "This endpoint allows to update user password and get the HTML for it."
+        })
+        response.headers['Access-Control-Allow-Methods'] = 'GET, PATCH'
+        return response
+    
     if request.method == 'GET':
         # Return a response for the GET request (e.g., render a template)
         return render_template('change_password.html')
