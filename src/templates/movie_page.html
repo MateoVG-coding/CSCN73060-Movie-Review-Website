@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ movie.title }}</title>
-    <!-- Add any additional styles or links to external stylesheets here -->
 </head>
 <body>
     <h1>{{ movie.title }}</h1>
@@ -25,12 +24,43 @@
         <p><strong>Your Rating:</strong> {{ rating.rating_value }}/10</p>
         <p><strong>Your Review:</strong> {{ review.review_text }}</p>
         <a href="/update_review/{{ movie.movie_ID }}">Update Review</a>
-        <a href="/delete_review/{{ movie.movie_ID }}">Delete Review</a>
+        <a href="#" id="deleteReviewLink">Delete Review</a>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const deleteReviewLink = document.getElementById('deleteReviewLink');
+                
+                deleteReviewLink.addEventListener('click', function(event) {
+                    event.preventDefault();
+
+                    const confirmDelete = confirm('Are you sure you want to delete your review?');
+                    if (confirmDelete) {
+                        fetch(`/delete_review/{{ movie.movie_ID }}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`Failed to delete review: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('Review deleted successfully:', data);
+                            window.location.href = '/movies';
+                        })
+                        .catch(error => {
+                            console.error('Error deleting review:', error);
+                        });
+                    }
+                });
+            });
+        </script>
     {% endif %}
 
     <a href="/">Home</a>
-
     <a href="/movies">Go back</a>
-
+    <a href="/reviews/{{ movie.movie_ID }}">See other reviews</a>
 </body>
 </html>

@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Review</title>
-    <!-- Add any additional styles or links to external stylesheets here -->
 </head>
 <body>
     <h1>Add Review</h1>
 
-    <!-- Display movie information -->
     <h2>{{ movie.title }}</h2>
     <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
     <p><strong>Genre:</strong> {{ movie.genre }}</p>
@@ -21,9 +19,7 @@
         <p>No image available</p>
     {% endif %}
 
-    <!-- Display the add review form -->
     <form action="/add_review/{{ movie.movie_ID }}" method="POST", enctype="application/json">
-        <!-- Include the session-stored username in the form -->
         <input type="hidden" name="username" value="{{ session['username'] }}">
         <input type="hidden" name="movie_ID" value="{{ movie.movie_ID }}">
         <label for="review_text">Review Text:</label>
