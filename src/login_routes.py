@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, session, render_template, redirect
+from flask import Blueprint, request, jsonify, session, render_template, redirect, url_for
 from models import User, UserAuthentication, db
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -42,18 +42,16 @@ def change_password():
         # Return a response for the GET request (e.g., render a template)
         return render_template('change_password.html')
 
-    if 'username' not in session:
-        return jsonify({'error': 'User not logged in'}), 401
+    data = request.get_json(force=True)
 
-    user = User.query.filter_by(username=session['username']).first()
-    if not user:
-        return jsonify({'error': 'User not found'}), 404
+    if 'username' not in data or 'current_password' not in data or 'new_password' not in data:
+        return jsonify({'error':'Missing password(s) or username'}), 400
+    
+    current_password = data['current_password']
+    new_password = data['new_password']
+    username = data['username']
 
-    current_password = request.form.get('current_password')
-    new_password = request.form.get('new_password')
-
-    if not current_password or not new_password:
-        return jsonify({'error': 'Missing current or new password'}), 400
+    user = User.query.filter_by(username=username).first()
 
     if not check_password_hash(user.password_hash, current_password):
         return jsonify({'error': 'Current password is incorrect'}), 401
@@ -62,4 +60,6 @@ def change_password():
     user.password_hash = generate_password_hash(new_password)
     db.session.commit()
 
-    return jsonify({'message': 'Password changed successfully'}), 200
+    return jsonify({'success': 'Password updated successfully', 'redirect_url': url_for('login.login')}), 200 
+
+   

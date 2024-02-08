@@ -53,12 +53,10 @@
                     return response.json();
                 })
                 .then(data => {
-                    // Handle success (if needed)
                     console.log('Review updated successfully:', data);
-                    window.location.href = '/movies'; // Redirect to movies page
+                    window.location.href = '/movies';
                 })
                 .catch(error => {
-                    // Handle error (if needed)
                     console.error('Error updating review:', error);
                 });
             });
@@ -67,7 +65,6 @@
     
 
     <form id="updateReviewForm">
-        <!-- Include the session-stored username in the form -->
         <input type="hidden" name="username" value="{{ session['username'] }}">
         <input type="hidden" name="movie_ID" value="{{ movie.movie_ID }}">
         <input type="hidden" name="review_ID" value="{{ review.review_ID }}" readonly>
