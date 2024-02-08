@@ -19,13 +19,16 @@ def add_review(movie_id):
         )
     elif request.method == 'POST':
         data = request.form
-        if 'username' not in data or 'movie_ID' not in data or 'review_text' not in data or 'rating' not in data:
-            return jsonify({'error': 'Missing username, movie_ID, or review_text in JSON'}), 400
+        if 'movie_ID' not in data or 'review_text' not in data or 'rating' not in data:
+            return jsonify({'error': 'Missing movie_ID, review_text or rating in JSON'}), 400
 
-        username = data['username']
+
         movie_ID = data['movie_ID']  # Adjust the attribute name here
         review_text = data['review_text']
         rating = data['rating']
+
+        if 'username' in session:
+            username = session['username']
 
         # Check if the user exists in the database
         user = User.query.filter_by(username=username).first()

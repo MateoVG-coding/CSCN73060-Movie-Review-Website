@@ -19,13 +19,13 @@
         <p>No image available</p>
     {% endif %}
 
-    {% if user_rating.rating_value is not none %}
-        <p><strong>Your Rating:</strong> {{ user_rating.rating_value }}/10</p>
-	    <p><strong>Your Review:</strong> {{ review.review_text }}</p>
-	    <a href="/update_review/{{ movie.movie_ID }}">Update Review</a>
-        <a href="/delete_review/{{ movie.movie_ID }}">Delete Review</a>
-    {% else %}
+    {% if rating is none %}
         <a href="/add_review/{{ movie.movie_ID }}">Add Review</a>
+    {% else %}
+        <p><strong>Your Rating:</strong> {{ rating.rating_value }}/10</p>
+        <p><strong>Your Review:</strong> {{ review.review_text }}</p>
+        <a href="/update_review/{{ movie.movie_ID }}">Update Review</a>
+        <a href="/delete_review/{{ movie.movie_ID }}">Delete Review</a>
     {% endif %}
 
     <a href="/">Home</a>
