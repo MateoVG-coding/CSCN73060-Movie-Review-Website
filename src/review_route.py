@@ -56,7 +56,7 @@ def update_review(movie_id):
 
     if request.method == 'GET':
         movie = Movie.query.get(movie_id)
-        user_id = session.get("user_id")
+        user_id = session['username']
         rating = Rating.query.filter_by(movie_ID=movie_id, username=user_id).first()
         review = Review.query.filter_by(movie_ID=movie_id, username=user_id).first()
 
@@ -69,11 +69,9 @@ def update_review(movie_id):
         )
     elif request.method == 'PUT':
         data = request.form
-        if 'username' not in data or 'movie_ID' not in data or 'review_ID' not in data or 'review_text' not in data or 'rating' not in data or 'rating_id' not in data:
+        if 'review_ID' not in data or 'review_text' not in data or 'rating' not in data or 'rating_id' not in data:
             return jsonify({'error': 'Missing username, movie_ID, review_ID, or review_text in JSON'}), 400
-
-        user_id = data['username']
-        movie_id = data['movie_ID']
+        
         review_id = data['review_ID']
         review_text = data['review_text']
         rating_id=data['rating_id']
@@ -106,11 +104,11 @@ def delete_review(movie_id):
     
     if request.method == 'DELETE':
         data = request.form
-        if 'username' not in data or 'review_ID' not in data or 'rating_id' not in data:
+        if 'review_ID' not in data or 'rating_id' not in data:
             return jsonify({'error': 'Missing username, movie_ID, review_ID, or review_text in JSON'}), 400
         
         movie = Movie.query.get(movie_id)
-        user_id = session.get("user_id")
+        user_id = session['username']
 
         review = Review.query.filter_by(movie_ID=movie_id, username=user_id).first()
         rating = Rating.query.filter_by(movie_ID=movie_id, username=user_id).first()
