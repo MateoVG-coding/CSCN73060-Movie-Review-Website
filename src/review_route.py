@@ -103,10 +103,6 @@ def delete_review(movie_id):
     """This function is for the route to update an existing review"""
     
     if request.method == 'DELETE':
-        data = request.form
-        if 'review_ID' not in data or 'rating_id' not in data:
-            return jsonify({'error': 'Missing username, movie_ID, review_ID, or review_text in JSON'}), 400
-        
         movie = Movie.query.get(movie_id)
         user_id = session['username']
 
