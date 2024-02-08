@@ -3,32 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <title>Add Review</title>
 </head>
 <body>
-    <h1>Add Review</h1>
+    <div class="container">
+        <h1>Add Review</h1>
 
-    <h2>{{ movie.title }}</h2>
-    <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
-    <p><strong>Genre:</strong> {{ movie.genre }}</p>
-    <p><strong>Director:</strong> {{ movie.director }}</p>
+        <div class="movie-details">
+            <div class="movie-poster">
+                {% if movie.url_image %}
+                    <img src="{{ movie.url_image }}" alt="{{ movie.title }} Poster" style="max-width: 400px; max-height: 600px;">
+                {% else %}
+                    <p>No image available</p>
+                {% endif %}
+            </div>
+            <div class="movie-info">
+                <h2>{{ movie.title }}</h2>
+                <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
+                <p><strong>Genre:</strong> {{ movie.genre }}</p>
+                <p><strong>Director:</strong> {{ movie.director }}</p>
+            </div>
+        </div>
 
-    {% if movie.url_image %}
-        <img src="{{ movie.url_image }}" alt="{{ movie.title }} Poster" style="max-width: 400px; max-height: 600px;">
-    {% else %}
-        <p>No image available</p>
-    {% endif %}
-
-    <form action="/add_review/{{ movie.movie_ID }}" method="POST", enctype="application/json">
-        <input type="hidden" name="username" value="{{ session['username'] }}">
-        <input type="hidden" name="movie_ID" value="{{ movie.movie_ID }}">
-        <label for="review_text">Review Text:</label>
-        <textarea name="review_text" required></textarea>
-        <br>
-        <label for="rating">Rating:</label>
-        <input type="number" name="rating" min="1" max="10" required>
-        <br>
-        <button type="submit">Submit Review</button>
-    </form>
+        <form action="/add_review/{{ movie.movie_ID }}" method="POST" enctype="application/json">
+            <input type="hidden" name="username" value="{{ session['username'] }}">
+            <input type="hidden" name="movie_ID" value="{{ movie.movie_ID }}">
+            <label for="review_text">Review Text:</label>
+            <textarea name="review_text" required></textarea>
+            <br>
+            <label for="rating">Rating:</label>
+            <input type="number" name="rating" min="1" max="10" required>
+            <br>
+            <button type="submit">Submit Review</button>
+        </form>
+    </div>
 </body>
 </html>

@@ -1,14 +1,28 @@
-{% block content %}
-
-  <h2>Movies</h2>
-  <ul>
-    {% for movie in movies %}
-        <li>
-            <a href="/movies/{{ movie.movie_ID }}">
-              {{ movie.title }}
-            </a>
-        </li>
-    {% endfor %}
-  </ul>
-
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Movie List</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Movie List</h1>
+        <div class="movie-grid">
+            {% for movie in movies %}
+            <div class="movie">
+                <a href="/movies/{{ movie.movie_ID }}">
+                    {% if movie.url_image %}
+                        <img src="{{ movie.url_image }}" alt="{{ movie.title }} Poster">
+                    {% else %}
+                        <p>No image available</p>
+                    {% endif %}
+                    <h2>{{ movie.title }}</h2>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

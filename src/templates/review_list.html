@@ -3,18 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <title>Movie Details</title>
-    <!-- Add any additional styles or links to external stylesheets here -->
 </head>
 <body>
-    <!-- Display Movie Information -->
     <h1>{{ movie.title }}</h1>
     <img src="{{ movie.url_image }}" alt="{{ movie.title }} Poster" style="max-width: 400px; max-height: 600px;">
     <p><strong>Genre:</strong> {{ movie.genre }}</p>
     <p><strong>Director:</strong> {{ movie.director }}</p>
     <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
 
-    <!-- Display Reviews and Ratings -->
     <h2>Reviews and Ratings</h2>
 
     {% for review, rating in reviews_and_ratings %}
@@ -27,7 +25,6 @@
     </div>
     {% endfor %}
 
-    <!-- Add a link to go back or any other relevant actions -->
     <a href="/movies">Back to Movie list</a>
     <a href='/movies/{{ movie.movie_ID }}'>Back to your review</a>
 </body>

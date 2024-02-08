@@ -3,64 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <title>{{ movie.title }}</title>
 </head>
 <body>
-    <h1>{{ movie.title }}</h1>
+    <div class="container">
+        <div class="movie-details">
+            <div class="movie-poster">
+                {% if movie.url_image %}
+                    <img src="{{ movie.url_image }}" alt="{{ movie.title }} Poster" style="max-width: 400px; max-height: 600px;">
+                {% else %}
+                    <p>No image available</p>
+                {% endif %}
+            </div>
+            <div class="movie-info">
+                <h1>{{ movie.title }}</h1>
+                <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
+                <p><strong>Genre:</strong> {{ movie.genre }}</p>
+                <p><strong>Director:</strong> {{ movie.director }}</p>
+            </div>
+        </div>
 
-    <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
-    <p><strong>Genre:</strong> {{ movie.genre }}</p>
-    <p><strong>Director:</strong> {{ movie.director }}</p>
-    
-    {% if movie.url_image %}
-        <img src="{{ movie.url_image }}" alt="{{ movie.title }} Poster" style="max-width: 400px; max-height: 600px;">
-    {% else %}
-        <p>No image available</p>
-    {% endif %}
+        <div class="actions">
+            {% if rating %}
+                <p><strong>Your Rating:</strong> {{ rating.rating_value }}/10</p>
+                <p><strong>Your Review:</strong> {{ review.review_text }}</p>
+                <a href="/update_review/{{ movie.movie_ID }}">Update Review</a>
+                <a href="#" id="deleteReviewLink">Delete Review</a>
+            {% else %}
+                <a href="/add_review/{{ movie.movie_ID }}">Add Review</a>
+            {% endif %}
+            <a href="/movies">Go back</a>
+            <a href="/reviews/{{ movie.movie_ID }}">See other reviews</a>
+        </div>
+    </div>
 
-    {% if rating is none %}
-        <a href="/add_review/{{ movie.movie_ID }}">Add Review</a>
-    {% else %}
-        <p><strong>Your Rating:</strong> {{ rating.rating_value }}/10</p>
-        <p><strong>Your Review:</strong> {{ review.review_text }}</p>
-        <a href="/update_review/{{ movie.movie_ID }}">Update Review</a>
-        <a href="#" id="deleteReviewLink">Delete Review</a>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const deleteReviewLink = document.getElementById('deleteReviewLink');
-                
-                deleteReviewLink.addEventListener('click', function(event) {
-                    event.preventDefault();
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteReviewLink = document.getElementById('deleteReviewLink');
+            
+            deleteReviewLink.addEventListener('click', function(event) {
+                event.preventDefault();
 
-                    const confirmDelete = confirm('Are you sure you want to delete your review?');
-                    if (confirmDelete) {
-                        fetch(`/delete_review/{{ movie.movie_ID }}`, {
-                            method: 'DELETE',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                        })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(`Failed to delete review: ${response.status}`);
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            console.log('Review deleted successfully:', data);
-                            window.location.href = '/movies';
-                        })
-                        .catch(error => {
-                            console.error('Error deleting review:', error);
-                        });
-                    }
-                });
+                const confirmDelete = confirm('Are you sure you want to delete your review?');
+                if (confirmDelete) {
+                    fetch(`/delete_review/{{ movie.movie_ID }}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Failed to delete review: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Review deleted successfully:', data);
+                        window.location.href = '/movies';
+                    })
+                    .catch(error => {
+                        console.error('Error deleting review:', error);
+                    });
+                }
             });
-        </script>
-    {% endif %}
-
-    <a href="/">Home</a>
-    <a href="/movies">Go back</a>
-    <a href="/reviews/{{ movie.movie_ID }}">See other reviews</a>
+        });
+    </script>
 </body>
 </html>
+
