@@ -120,4 +120,18 @@ def delete_review(movie_id):
     else:
         return jsonify({'error': 'Invalid request format'})
         
-    
+@review_bp.route('/reviews/<int:movie_id>', methods=['GET'])
+def get_all_reviews(movie_id):
+    """This function is for the route to display all reviews for a certain movie"""
+
+    movie = Movie.query.get(movie_id)
+    reviews = Review.query.filter_by(movie_ID=movie_id).all()
+    ratings = Rating.query.filter_by(movie_ID=movie_id).all()
+
+    reviews_and_ratings = zip(reviews, ratings)
+
+    return render_template(
+        "review_list.html", 
+        reviews_and_ratings=reviews_and_ratings,
+        movie=movie
+    )
