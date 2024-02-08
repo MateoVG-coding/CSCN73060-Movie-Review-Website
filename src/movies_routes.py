@@ -9,19 +9,17 @@ def get_movie(movie_id):
 
     #This function should send the HTML of the movie from the db
     movie = Movie.query.get(movie_id)
-    user_id = session.get("user_id")
+
+    if 'username' in session:
+        user_id = session['username']
     
-    if user_id:
-        user_rating = Rating.query.filter_by(movie_ID=movie_id, username=user_id).first()
-        review = Review.query.filter_by(movie_ID=movie_id, username=user_id).first()
-    else:
-        user_rating=None
-        review=None
-    
+    rating = Rating.query.filter_by(movie_ID=movie_id, username=user_id).first()
+    review = Review.query.filter_by(movie_ID=movie_id, username=user_id).first()
+
     return render_template(
         "movie_page.html",
         movie=movie,
-        user_rating=user_rating,
+        rating=rating,
         review=review
     )
 
