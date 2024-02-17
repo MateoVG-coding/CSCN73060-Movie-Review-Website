@@ -14,7 +14,7 @@
             <div class="movie">
                 <a href="/movies/{{ movie.movie_ID }}">
                     {% if movie.url_image %}
-                        <img src="{{ movie.url_image }}" alt="{{ movie.title }} Poster">
+                        <img src="{{ url_for('static', filename='images/' + movie.movie_ID|string + '.jpg') }}" alt="{{ movie.title }} Poster">
                     {% else %}
                         <p>No image available</p>
                     {% endif %}

@@ -11,7 +11,7 @@
         <div class="movie-details">
             <div class="movie-poster">
                 {% if movie.url_image %}
-                    <img src="{{ movie.url_image }}" alt="{{ movie.title }} Poster" style="max-width: 400px; max-height: 600px;">
+                    <img src="{{ url_for('static', filename='images/' + movie.movie_ID|string + '.jpg') }}" alt="{{ movie.title }} Poster" style="max-width: 400px; max-height: 600px;">
                 {% else %}
                     <p>No image available</p>
                 {% endif %}

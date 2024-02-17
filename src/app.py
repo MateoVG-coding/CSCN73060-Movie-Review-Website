@@ -12,20 +12,19 @@ app = Flask(__name__)
 
 app.secret_key = "123"
 
+connect_to_db(app)
+with app.app_context():
+    db.create_all()
+
+with app.app_context():
+    initialize_movies()
+
+# Register blueprints
+app.register_blueprint(login_bp)
+app.register_blueprint(register_bp)
+app.register_blueprint(review_bp)
+app.register_blueprint(home_bp)
+app.register_blueprint(movies_bp)
+
 if __name__ == "__main__":
-
-    connect_to_db(app)
-    with app.app_context():
-        db.create_all()
-
-    # Initialize movies within the application context
-    with app.app_context():
-        initialize_movies()
-
-    app.register_blueprint(login_bp)
-    app.register_blueprint(register_bp)
-    app.register_blueprint(review_bp)
-    app.register_blueprint(home_bp)
-    app.register_blueprint(movies_bp)
-
-    app.run(debug=True)
+    app.run(debug=True, threaded=True)

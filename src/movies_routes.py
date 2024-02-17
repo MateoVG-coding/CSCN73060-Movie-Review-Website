@@ -10,11 +10,13 @@ def get_movie(movie_id):
     #This function should send the HTML of the movie from the db
     movie = Movie.query.get(movie_id)
 
-    if 'username' in session:
-        user_id = session['username']
-    
-    rating = Rating.query.filter_by(movie_ID=movie_id, username=user_id).first()
-    review = Review.query.filter_by(movie_ID=movie_id, username=user_id).first()
+    user_id = session.get('username')
+
+    if user_id:
+        rating = Rating.query.filter_by(movie_ID=movie_id, username=user_id).first()
+        review = Review.query.filter_by(movie_ID=movie_id, username=user_id).first()
+    else:
+        return jsonify({'error': 'User not logged in.'}), 401
 
     return render_template(
         "movie_page.html",

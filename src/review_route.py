@@ -8,6 +8,8 @@ review_bp = Blueprint('review', __name__)
 def add_review(movie_id):
     """This function is for the route to add a new review"""
 
+    username = session.get('username') 
+
     if request.method == 'GET':
         # Should return html or js file to add review
 
@@ -27,8 +29,8 @@ def add_review(movie_id):
         review_text = data['review_text']
         rating = data['rating']
 
-        if 'username' in session:
-            username = session['username']
+        if not username:  # Check if username is not present in session
+            return jsonify({'error': 'User not logged in.'}), 401
 
         # Check if the user exists in the database
         user = User.query.filter_by(username=username).first()
